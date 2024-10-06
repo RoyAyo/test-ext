@@ -3,7 +3,7 @@
     "name": "Lightforth linkedin Collector",
     "version": "1.0",
     "permissions": ["cookies", "tabs", "storage"],
-    "host_permissions": ["https://*.linkedin.com/"],
+    "host_permissions": ["https://linkedin.com/*"],
     "background": {
       "service_worker": "background.js"
     },

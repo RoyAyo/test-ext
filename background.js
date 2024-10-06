@@ -1,21 +1,25 @@
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    console.log(sender)
     if (request.type === "getCookie") {
-        console.log(request)
-        chrome.cookies.get({
+        console.log("Received getCookie request:", request);
+        chrome.cookies.getAll({
             url: request.url,
             name: request.cookieName
-        }, (cookie) => {
-            if (cookie) {
-                console.log("Cookie value:", cookie.value);
-                sendResponse({ value: cookie.value });
+        }, (cookies) => {
+            if (chrome.runtime.lastError) {
+                console.error("Error fetching cookies:", chrome.runtime.lastError);
+                sendResponse({ error: chrome.runtime.lastError.message });
+                return;
+            }
+
+            if (cookies && cookies.length > 0) {
+                console.log("Cookies found:", cookies);
+                sendResponse({ value: cookies });
             } else {
-                console.log("Cookie not found");
+                console.log("Cookies not found");
                 sendResponse({ value: null });
             }
         });
-  
-      return true;
+
+        return true;
     }
 });
-  
